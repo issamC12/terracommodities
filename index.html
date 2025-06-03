@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terracommodities – Site Update</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+      color: #fff;
+    }
+
+    img {
+      max-width: 300px;
+      margin-top: 40px;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .basinIframe {
+      width: 100%;
+      max-width: 420px;
+      background-color: #111;
+      border: none;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      min-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <img src="logo-terra.png" alt="Terracommodities Logo" />
+  <h1>Our website is currently being updated</h1>
+  <p>Please leave us a message. We’ll get back to you shortly.</p>
+
+  <iframe
+    class="basinIframe"
+    src="https://usebasin.com/form/ed225303f5ff/view/abc304f3701f?iframe=true"
+    allowtransparency="true"
+    frameborder="0"
+    style="border: none; overflow: hidden;"
+    width="100%"
+    onload="var self = this; self.contentWindow.postMessage('getHeight', '*'); setInterval(function() { self.contentWindow.postMessage('getHeight', '*'); }, 500); window.addEventListener('message', function(event) { if (event.data.action === 'setHeight') { self.style.height = event.data.height + 'px'; } });"
+  ></iframe>
+
+  <script type="text/javascript">
+    window.addEventListener('message', function(event) {
+      if (event.data.action === 'redirect') {
+        window.location.href = event.data.url;
+      }
+    });
+  </script>
+</body>
+</html>
