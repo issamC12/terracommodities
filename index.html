@@ -3,30 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Terracommodities – Site Update</title>
+  <title>Terracommodities – Your trusted Partner in Agricultural commodities</title>
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
       background-color: #000;
       font-family: Arial, sans-serif;
+      color: #fff;
       display: flex;
-      align-items: center;
-      justify-content: center;
       flex-direction: column;
+      align-items: center;
+      padding: 20px;
       min-height: 100vh;
       text-align: center;
-      color: #fff;
     }
 
-    img {
+    img.logo {
       max-width: 300px;
       margin-top: 40px;
       margin-bottom: 30px;
+      transition: transform 0.3s ease;
+    }
+
+    img.logo:hover {
+      transform: scale(1.05);
     }
 
     h1 {
@@ -37,36 +42,91 @@
     p {
       font-size: 1.1rem;
       color: #ccc;
-      margin-bottom: 40px;
-      padding: 0 20px;
+      margin-bottom: 30px;
     }
 
-    .basinIframe {
-      width: 100%;
-      max-width: 420px;
-      background-color: #111;
-      border: none;
+    .carousel {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      height: 250px;
+      margin-bottom: 40px;
       overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-      min-height: 400px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    }
+
+    .carousel img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .carousel img.active {
+      opacity: 1;
+    }
+
+    iframe.basinIframe {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      box-shadow: none;
+      image-rendering: auto;
+      transform: none !important;
+      filter: none !important;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+
+    iframe.basinIframe:hover {
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+
+    @media screen and (max-width: 768px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      img.logo {
+        max-width: 220px;
+      }
+
+      .carousel {
+        height: 200px;
+      }
     }
   </style>
 </head>
 <body>
-  <img src="logo-terra.png" alt="Terracommodities Logo" />
+  <img src="logo-terra.png" alt="Terracommodities Logo" class="logo" />
   <h1>Our website is currently being updated</h1>
   <p>Please leave us a message. We’ll get back to you shortly.</p>
 
-  <iframe
-    class="basinIframe"
+  <!-- Carrousel d’images -->
+  <div class="carousel">
+    <img src="photo1.jpg" class="active" alt="Agricultural Image 1" />
+    <img src="photo2.jpg" alt="Agricultural Image 2" />
+    <img src="photo3.jpg" alt="Agricultural Image 3" />
+  </div>
+
+  <!-- Formulaire intégré avec animation propre -->
+  <iframe class="basinIframe"
     src="https://usebasin.com/form/ed225303f5ff/view/abc304f3701f?iframe=true"
-    allowtransparency="true"
-    frameborder="0"
+    allowtransparency="true" frameborder="0"
     style="border: none; overflow: hidden;"
-    width="100%"
     onload="var self = this; self.contentWindow.postMessage('getHeight', '*'); setInterval(function() { self.contentWindow.postMessage('getHeight', '*'); }, 500); window.addEventListener('message', function(event) { if (event.data.action === 'setHeight') { self.style.height = event.data.height + 'px'; } });"
-  ></iframe>
+    width="100%">
+  </iframe>
 
   <script type="text/javascript">
     window.addEventListener('message', function(event) {
@@ -74,6 +134,21 @@
         window.location.href = event.data.url;
       }
     });
+
+    // Carrousel automatique
+    let carouselIndex = 0;
+    const images = document.querySelectorAll('.carousel img');
+
+    function showNextImage() {
+      images[carouselIndex].classList.remove('active');
+      carouselIndex = (carouselIndex + 1) % images.length;
+      images[carouselIndex].classList.add('active');
+    }
+
+    setInterval(showNextImage, 3500); // toutes les 3.5 secondes
   </script>
 </body>
 </html>
+
+
+
