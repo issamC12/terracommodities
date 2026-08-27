@@ -1285,6 +1285,72 @@ html{ overflow-x:hidden; }
    rendait presque invisible, ce qui n'était pas l'intention. */
 .e4-code{ color:#B8B2A2; }
 
+/* ── ALIGNEMENT DES LIGNES DE TABLEAU ─────────────────────────────────────
+   La colonne de gauche était en « auto » : sa largeur suivait la longueur du
+   mot, si bien que « CONFIDENTIALITÉ » et « ORIGINE » ne produisaient pas le
+   même retrait. Les titres se décalaient d'une ligne à l'autre.
+   Une colonne de largeur fixe aligne tout le contenu sur un même axe. */
+.ledger-row,
+.ledger .ledger-r{
+  grid-template-columns:170px 1fr;
+  gap:clamp(20px,3vw,40px);
+}
+@media (max-width:960px){
+  .ledger-row,
+  .ledger .ledger-r{ grid-template-columns:140px 1fr; }
+}
+@media (max-width:700px){
+  .ledger-row,
+  .ledger .ledger-r{ grid-template-columns:1fr; gap:8px; }
+}
+/* La clé se cale en haut de sa cellule, à la même hauteur que le titre. */
+.ledger-k{ align-self:start; padding-top:3px; }
+
+/* ── LIEN LINKEDIN DU PIED DE PAGE ────────────────────────────────────────
+   Un contact direct compte autant qu'un formulaire : c'est par là qu'un
+   acheteur vérifie qu'il y a bien quelqu'un derrière la société. */
+.ft-li{ display:inline-flex; align-items:center; gap:9px; margin-top:14px;
+  min-height:40px; }
+.ft-li svg{ width:16px; height:16px; flex:none; }
+.ft-li span{ font-size:12.5px; }
+.ft-li:hover{ color:var(--ivory); }
+
+/* ── CORRECTIF : SECTION « CIRCULATION DES DOCUMENTS » ────────────────────
+   Deux défauts cumulés. La liste héritait du style monospace en majuscules
+   d'un conteneur parent, et le paragraphe tombait à une largeur nulle faute
+   de propriété flex, ce qui empilait les trois textes les uns sur les autres.
+   On rétablit la typographie du corps de texte et on force la colonne à
+   occuper la place restante. */
+.dc-l,
+.dc-i,
+.dc-x{
+  font-family:var(--f-body);
+  text-transform:none;
+  letter-spacing:normal;
+}
+.dc-x{
+  flex:1 1 auto;
+  min-width:0;
+  font-size:13.5px;
+  line-height:1.72;
+  color:var(--stone-txt);
+}
+/* Le numéro garde le style monospace : c'est un repère, pas du texte. */
+.dc-n{
+  font-family:var(--f-mono);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  flex:0 0 auto;
+}
+
+/* La cause réelle : .dc-i était en display:flex sans largeur imposée, à
+   l'intérieur d'un parent lui-même en flex-direction:column. Un enfant flex
+   ne s'étire pas sur l'axe transversal si align-items vaut autre chose que
+   stretch — ici le conteneur héritait d'un alignement qui le réduisait à la
+   largeur du numéro. On impose l'étirement et une largeur pleine. */
+.dc-l{ align-items:stretch; }
+.dc-i{ width:100%; box-sizing:border-box; }
+
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.terracommodities.fr/"}, {"@type": "ListItem", "position": 2, "name": "Contact", "item": "https://www.terracommodities.fr/contact.html"}]}</script>
 </head>
@@ -1522,8 +1588,12 @@ html{ overflow-x:hidden; }
       </div>
       <div>
         <p class="ft-h" data-i18n="ft_contact">Contact</p>
-        <p>[Adresse du siège] <br>[Code postal] Paris, France</p>
+        <p data-i18n="ft_city">Paris, France</p>
         <a href="mailto:contact@terracommodities.fr">contact@terracommodities.fr</a>
+        <a class="ft-li" href="https://www.linkedin.com/company/terracommodities" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C21.1 8.65 22 11 22 14.1V21h-4v-6.1c0-1.45-.52-2.45-1.82-2.45-1.1 0-1.75.74-2.04 1.45-.1.26-.13.62-.13.98V21h-4z"/></svg>
+          <span data-i18n="ft_li">Suivre Terra Commodities sur LinkedIn</span>
+        </a>
       </div>
     </div>
     <div class="ft-bot">
@@ -1662,7 +1732,7 @@ idx_c1_t:"Agriculture",
 idx_c1_d:"Vanille, poivres, girofle, cannelle, huiles essentielles. Nos équipes sont sur place à Madagascar : nous connaissons les exploitations et nous voyons la marchandise avant vous.",
 idx_c2_n:"Division 02",
 idx_c2_t:"Métaux",
-idx_c2_d:"Or. Raffineries accréditées, origine documentée, contreparties vérifiées auprès des registres officiels et de nos conseils juridiques.",
+idx_c2_d:"Métaux précieux. Raffineries accréditées, origine documentée, contreparties vérifiées auprès des registres officiels et analysées par nos conseils juridiques.",
 idx_c3_n:"Division 03",
 idx_c3_t:"Energy",
 idx_c3_d:"Diesel EN590, jet fuel A1, brut, gaz naturel, GPL, GNL. Criblage des sanctions et vérification documentaire sur chaque opération.",
@@ -1742,8 +1812,8 @@ agv8:"Commerce international",
 ag_cta_t:"Un besoin en épices ou produits agricoles ?",
 ag_cta_b:"Demander une cotation",
 mt_eb:"Division 02 · Métaux",
-mt_h1:"Or",
-mt_sub:"Notre division Métaux est consacrée au courtage sur l'or. Raffineries accréditées, documentation d'origine complète, contreparties vérifiées auprès des registres officiels et de nos conseils juridiques.",
+mt_h1:"Métaux précieux",
+mt_sub:"Notre division Métaux couvre les métaux précieux, l'or en premier lieu. Raffineries accréditées, documentation d'origine complète, contreparties vérifiées auprès des registres officiels et analysées par nos conseils juridiques.",
 mt_cta:"Prendre contact",
 mt_role_eb:"Notre rôle",
 mt_role_t:"Intermédiaire vérifié",
@@ -1883,7 +1953,7 @@ sell_2:"Références bancaires et capacité de paiement confirmées",
 sell_3:"Rencontre des décideurs avant la première opération",
 ct_sending:"Envoi en cours…",
 ct_ok:"Message reçu. Nous revenons vers vous sous 48 heures ouvrées.",
-ct_err:"L'envoi a échoué. Écrivez-nous directement à <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"L'envoi a échoué. Écrivez-nous directement à <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"Intégration d'un partenaire",
 ob_t:"Six étapes, dans cet ordre, pour chaque partenaire",
 ob_p:"Le même parcours s'applique aux acheteurs comme aux fournisseurs, sur nos trois divisions. Il prend entre deux et six semaines selon le pays.",
@@ -2022,7 +2092,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"Notre procédure de vérification",
-cf_link_detail:"Le détail de notre procédure"
+cf_link_detail:"Le détail de notre procédure",
+ft_li:"Suivre Terra Commodities sur LinkedIn",
+ft_city:"Paris, France"
 },
 en:{
 nav_home:"Home",
@@ -2079,7 +2151,7 @@ idx_c1_t:"Agriculture",
 idx_c1_d:"Vanilla, peppers, clove, cinnamon, essential oils. Our teams are on the ground in Madagascar: we know the farms and we see the goods before you do.",
 idx_c2_n:"Division 02",
 idx_c2_t:"Metals",
-idx_c2_d:"Gold. Accredited refineries, documented origin, counterparties checked against official registries and reviewed by our legal counsel.",
+idx_c2_d:"Precious metals. Accredited refineries, documented origin, counterparties checked against official registries and reviewed by our legal counsel.",
 idx_c3_n:"Division 03",
 idx_c3_t:"Energy",
 idx_c3_d:"Diesel EN590, jet fuel A1, crude, natural gas, LPG, LNG. Sanctions screening and documentary verification on every operation.",
@@ -2159,8 +2231,8 @@ agv8:"International trade",
 ag_cta_t:"Looking for spices or agricultural products?",
 ag_cta_b:"Request a quotation",
 mt_eb:"Division 02 · Metals",
-mt_h1:"Gold",
-mt_sub:"Our Metals division is dedicated to gold brokerage. Accredited refineries, complete origin documentation, counterparties checked against official registries and reviewed by our legal counsel.",
+mt_h1:"Precious metals",
+mt_sub:"Our Metals division covers precious metals, gold first among them. Accredited refineries, complete origin documentation, counterparties checked against official registries and reviewed by our legal counsel.",
 mt_cta:"Get in touch",
 mt_role_eb:"Our role",
 mt_role_t:"A verified intermediary",
@@ -2300,7 +2372,7 @@ sell_2:"Bank references and ability to pay confirmed",
 sell_3:"Decision-makers met before the first operation",
 ct_sending:"Sending…",
 ct_ok:"Message received. We will come back to you within 48 business hours.",
-ct_err:"Sending failed. Please write to us directly at <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"Sending failed. Please write to us directly at <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"Partner onboarding",
 ob_t:"Six steps, in this order, for every partner",
 ob_p:"The same process applies to buyers and suppliers alike, across all three divisions. It takes between two and six weeks depending on the country.",
@@ -2439,7 +2511,9 @@ nrg_q4_k:"Compliance",
 nrg_q4_t:"Do the origin and the parties clear screening",
 nrg_q4_d:"Product origin, loading country, chartered vessel, beneficial owners: each is checked against sanctions lists before any introduction.",
 nrg_link:"Our verification procedure",
-cf_link_detail:"Our procedure in detail"
+cf_link_detail:"Our procedure in detail",
+ft_li:"Follow Terra Commodities on LinkedIn",
+ft_city:"Paris, France"
 },
 es:{
 nav_home:"Inicio",
@@ -2496,7 +2570,7 @@ idx_c1_t:"Agricultura",
 idx_c1_d:"Vainilla, pimientas, clavo, canela, aceites esenciales. Nuestros equipos están sobre el terreno en Madagascar: conocemos las explotaciones y vemos la mercancía antes que usted.",
 idx_c2_n:"División 02",
 idx_c2_t:"Metales",
-idx_c2_d:"Oro. Refinerías acreditadas, origen documentado, contrapartes verificadas ante los registros oficiales y revisadas por nuestros asesores jurídicos.",
+idx_c2_d:"Metales preciosos. Refinerías acreditadas, origen documentado, contrapartes verificadas ante los registros oficiales y analizadas por nuestros asesores jurídicos.",
 idx_c3_n:"División 03",
 idx_c3_t:"Energy",
 idx_c3_d:"Diésel EN590, jet fuel A1, crudo, gas natural, GLP, GNL. Cribado de sanciones y verificación documental en cada operación.",
@@ -2576,8 +2650,8 @@ agv8:"Comercio internacional",
 ag_cta_t:"¿Necesita especias o productos agrícolas?",
 ag_cta_b:"Solicitar cotización",
 mt_eb:"División 02 · Metales",
-mt_h1:"Oro",
-mt_sub:"Nuestra división de Metales se dedica a la intermediación en oro. Refinerías acreditadas, documentación de origen completa, contrapartes verificadas ante los registros oficiales y revisadas por nuestros asesores jurídicos.",
+mt_h1:"Metales preciosos",
+mt_sub:"Nuestra división de Metales cubre los metales preciosos, el oro en primer lugar. Refinerías acreditadas, documentación de origen completa, contrapartes verificadas ante los registros oficiales y analizadas por nuestros asesores jurídicos.",
 mt_cta:"Contactar",
 mt_role_eb:"Nuestro papel",
 mt_role_t:"Intermediario verificado",
@@ -2717,7 +2791,7 @@ sell_2:"Referencias bancarias y capacidad de pago confirmadas",
 sell_3:"Reunión con los responsables antes de la primera operación",
 ct_sending:"Enviando…",
 ct_ok:"Mensaje recibido. Le responderemos en un plazo de 48 horas laborables.",
-ct_err:"El envío ha fallado. Escríbanos directamente a <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"El envío ha fallado. Escríbanos directamente a <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"Incorporación de un socio",
 ob_t:"Seis etapas, en este orden, para cada socio",
 ob_p:"El mismo proceso se aplica a compradores y proveedores, en nuestras tres divisiones. Lleva entre dos y seis semanas según el país.",
@@ -2829,8 +2903,8 @@ dc_eb:"Circulación de los documentos",
 mt_q_eb:"Lo que nos preguntan",
 mt_q_t:"Las cuatro preguntas que deciden una operación",
 mt_q1_k:"Forme",
-mt_q1_t:"Sous quelle forme la marchandise est-elle livrée",
-mt_q1_d:"Doré, lingot, grenaille : la forme détermine le coût d'affinage et la capacité de l'acheteur à réceptionner. Une opération se cale sur ce point avant le prix.",
+mt_q1_t:"¿En qué forma se entrega la mercancía?",
+mt_q1_d:"Doré, lingote, granalla: la forma determina el coste de afinado y la capacidad del comprador para recepcionar. Una operación se fija sobre este punto antes que sobre el precio.",
 mt_q2_k:"Raffinerie",
 mt_q2_t:"Quelle raffinerie intervient à l'affinage",
 mt_q2_d:"L'accréditation de la raffinerie conditionne l'acceptation du lot par la contrepartie et par sa banque. Nous établissons ce point avant toute présentation.",
@@ -2856,7 +2930,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"Nuestro procedimiento de verificación",
-cf_link_detail:"El detalle de nuestro procedimiento"
+cf_link_detail:"El detalle de nuestro procedimiento",
+ft_li:"Seguir a Terra Commodities en LinkedIn",
+ft_city:"París, Francia"
 },
 zh:{
 nav_home:"首页",
@@ -2913,7 +2989,7 @@ idx_c1_t:"农业",
 idx_c1_d:"香草、各类胡椒、丁香、肉桂、精油。我们的团队常驻马达加斯加：我们熟悉每一处农场，也比您更早见到货品。",
 idx_c2_n:"业务部门 02",
 idx_c2_t:"金属",
-idx_c2_d:"黄金。认证精炼厂、可查证来源，交易对手经官方登记核验并由法律顾问审阅。",
+idx_c2_d:"贵金属。认证精炼厂、可查证来源，交易对手经官方登记核验并由法律顾问审阅。",
 idx_c3_n:"业务部门 03",
 idx_c3_t:"能源",
 idx_c3_d:"EN590 柴油、A1 航空燃油、原油、天然气、液化石油气、液化天然气。每笔业务均进行制裁筛查与单证核验。",
@@ -2993,8 +3069,8 @@ agv8:"国际贸易",
 ag_cta_t:"需要香料或农产品？",
 ag_cta_b:"索取报价",
 mt_eb:"业务部门 02 · 金属",
-mt_h1:"黄金",
-mt_sub:"我们的金属部门专注于黄金经纪。认证精炼厂、完整来源单证，交易对手经官方登记核验并由法律顾问审阅。",
+mt_h1:"贵金属",
+mt_sub:"我们的金属部门覆盖贵金属，以黄金为主。认证精炼厂、完整来源单证，交易对手经官方登记核验并由法律顾问审阅。",
 mt_cta:"联系我们",
 mt_role_eb:"我们的角色",
 mt_role_t:"经核查的中介",
@@ -3134,7 +3210,7 @@ sell_2:"银行资信与付款能力已核实",
 sell_3:"首次合作前与决策者当面会晤",
 ct_sending:"发送中…",
 ct_ok:"已收到您的信息，我们将在 48 个工作小时内回复。",
-ct_err:"发送失败。请直接发送邮件至 <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>。",
+ct_err:"发送失败。请直接发送邮件至 <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>。",
 ob_eb:"合作方准入",
 ob_t:"每一位合作方，都要走完这六步",
 ob_p:"买方与供应商适用同一流程，三个业务部门皆然。视国别不同，通常需要二至六周。",
@@ -3246,8 +3322,8 @@ dc_eb:"单证流转",
 mt_q_eb:"客户常问",
 mt_q_t:"决定一笔业务的四个问题",
 mt_q1_k:"Forme",
-mt_q1_t:"Sous quelle forme la marchandise est-elle livrée",
-mt_q1_d:"Doré, lingot, grenaille : la forme détermine le coût d'affinage et la capacité de l'acheteur à réceptionner. Une opération se cale sur ce point avant le prix.",
+mt_q1_t:"货品以何种形态交付",
+mt_q1_d:"合质金、金锭还是金粒：形态决定精炼成本，也决定买方能否接收。业务先在这一点上定下来，之后才谈价格。",
 mt_q2_k:"Raffinerie",
 mt_q2_t:"Quelle raffinerie intervient à l'affinage",
 mt_q2_d:"L'accréditation de la raffinerie conditionne l'acceptation du lot par la contrepartie et par sa banque. Nous établissons ce point avant toute présentation.",
@@ -3273,7 +3349,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"我们的核查程序",
-cf_link_detail:"我们的程序详情"
+cf_link_detail:"我们的程序详情",
+ft_li:"在领英关注 Terra Commodities",
+ft_city:"法国巴黎"
 },
 ja:{
 nav_home:"ホーム",
@@ -3330,7 +3408,7 @@ idx_c1_t:"アグリカルチャー",
 idx_c1_d:"バニラ、各種胡椒、クローブ、シナモン、精油。当社チームはマダガスカル現地に常駐し、農園を把握し、お客様より先に現物を確認します。",
 idx_c2_n:"事業部門 02",
 idx_c2_t:"メタル",
-idx_c2_d:"金。認定精錬所、裏付けのある産地、公的登記で確認し法務顧問が精査した取引相手。",
+idx_c2_d:"貴金属。認定精錬所、裏付けのある産地、公的登記で確認し法務顧問が精査した取引相手。",
 idx_c3_n:"事業部門 03",
 idx_c3_t:"エネルギー",
 idx_c3_d:"EN590 ディーゼル、ジェット燃料 A1、原油、天然ガス、LPG、LNG。すべての案件で制裁照会と書類確認を行います。",
@@ -3410,8 +3488,8 @@ agv8:"国際貿易",
 ag_cta_t:"スパイスや農産物をお探しですか？",
 ag_cta_b:"見積もりを依頼",
 mt_eb:"事業部門 02 · メタル",
-mt_h1:"金",
-mt_sub:"メタル部門は金の仲介に特化しています。認定精錬所、完全な産地書類、公的登記で確認し法務顧問が精査した取引相手。",
+mt_h1:"貴金属",
+mt_sub:"メタル部門は貴金属を扱い、なかでも金を中心としています。認定精錬所、完全な産地書類、公的登記で確認し法務顧問が精査した取引相手。",
 mt_cta:"お問い合わせ",
 mt_role_eb:"私たちの役割",
 mt_role_t:"検証済みの仲介者",
@@ -3551,7 +3629,7 @@ sell_2:"銀行照会と支払能力を確認済み",
 sell_3:"初回取引の前に決裁者と面談",
 ct_sending:"送信中…",
 ct_ok:"メッセージを受け付けました。48営業時間以内にご返信いたします。",
-ct_err:"送信できませんでした。<a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a> まで直接ご連絡ください。",
+ct_err:"送信できませんでした。<a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a> まで直接ご連絡ください。",
 ob_eb:"パートナーの受け入れ",
 ob_t:"すべてのパートナーに、この順で六段階",
 ob_p:"買い手にもサプライヤーにも、三部門すべてで同じ手続きを適用します。国により二週間から六週間ほどを要します。",
@@ -3663,8 +3741,8 @@ dc_eb:"書類の取り扱い",
 mt_q_eb:"よくいただくご質問",
 mt_q_t:"案件の成否を決める四つの問い",
 mt_q1_k:"Forme",
-mt_q1_t:"Sous quelle forme la marchandise est-elle livrée",
-mt_q1_d:"Doré, lingot, grenaille : la forme détermine le coût d'affinage et la capacité de l'acheteur à réceptionner. Une opération se cale sur ce point avant le prix.",
+mt_q1_t:"どの形態で引き渡されるか",
+mt_q1_d:"ドーレ、地金、グラニュール——形態によって精錬費用が変わり、買主が受け取れるかどうかも決まります。価格より先に、この点で案件が固まります。",
 mt_q2_k:"Raffinerie",
 mt_q2_t:"Quelle raffinerie intervient à l'affinage",
 mt_q2_d:"L'accréditation de la raffinerie conditionne l'acceptation du lot par la contrepartie et par sa banque. Nous établissons ce point avant toute présentation.",
@@ -3690,7 +3768,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"当社の検証手続き",
-cf_link_detail:"手続きの詳細"
+cf_link_detail:"手続きの詳細",
+ft_li:"LinkedIn で Terra Commodities をフォロー",
+ft_city:"フランス・パリ"
 },
 "en-US":{
 nav_home:"Home",
@@ -3747,7 +3827,7 @@ idx_c1_t:"Agriculture",
 idx_c1_d:"Vanilla, peppers, clove, cinnamon, essential oils. Our teams are on the ground in Madagascar: we know the farms and we see the goods before you do.",
 idx_c2_n:"Division 02",
 idx_c2_t:"Metals",
-idx_c2_d:"Gold. Accredited refineries, documented origin, counterparties checked against official registries and reviewed by our legal counsel.",
+idx_c2_d:"Precious metals. Accredited refineries, documented origin, counterparties checked against official registries and reviewed by our legal counsel.",
 idx_c3_n:"Division 03",
 idx_c3_t:"Energy",
 idx_c3_d:"Diesel EN590, jet fuel A1, crude, natural gas, LPG, LNG. Sanctions screening and documentary verification on every operation.",
@@ -3827,8 +3907,8 @@ agv8:"International trade",
 ag_cta_t:"Looking for spices or agricultural products?",
 ag_cta_b:"Request a quotation",
 mt_eb:"Division 02 · Metals",
-mt_h1:"Gold",
-mt_sub:"Our Metals division is dedicated to gold brokerage. Accredited refineries, complete origin documentation, counterparties checked against official registries and reviewed by our legal counsel.",
+mt_h1:"Precious metals",
+mt_sub:"Our Metals division covers precious metals, gold first among them. Accredited refineries, complete origin documentation, counterparties checked against official registries and reviewed by our legal counsel.",
 mt_cta:"Get in touch",
 mt_role_eb:"Our role",
 mt_role_t:"A verified intermediary",
@@ -3968,7 +4048,7 @@ sell_2:"Bank references and ability to pay confirmed",
 sell_3:"Decision-makers met before the first operation",
 ct_sending:"Sending…",
 ct_ok:"Message received. We will come back to you within 48 business hours.",
-ct_err:"Sending failed. Please write to us directly at <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"Sending failed. Please write to us directly at <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"Partner onboarding",
 ob_t:"Six steps, in this order, for every partner",
 ob_p:"The same process applies to buyers and suppliers alike, across all three divisions. It takes between two and six weeks depending on the country.",
@@ -4107,7 +4187,9 @@ nrg_q4_k:"Compliance",
 nrg_q4_t:"Do the origin and the parties clear screening",
 nrg_q4_d:"Product origin, loading country, chartered vessel, beneficial owners: each is checked against sanctions lists before any introduction.",
 nrg_link:"Our verification procedure",
-cf_link_detail:"Our procedure in detail"
+cf_link_detail:"Our procedure in detail",
+ft_li:"Follow Terra Commodities on LinkedIn",
+ft_city:"Paris, France"
 },
 de:{
 nav_home:"Startseite",
@@ -4164,7 +4246,7 @@ idx_c1_t:"Agrar",
 idx_c1_d:"Vanille, Pfeffer, Nelken, Zimt, ätherische Öle. Unsere Teams sind vor Ort in Madagaskar: Wir kennen die Betriebe und sehen die Ware vor Ihnen.",
 idx_c2_n:"Bereich 02",
 idx_c2_t:"Metalle",
-idx_c2_d:"Gold. Akkreditierte Raffinerien, belegte Herkunft, Geschäftspartner über amtliche Register geprüft und von unseren Rechtsberatern beurteilt.",
+idx_c2_d:"Edelmetalle. Akkreditierte Raffinerien, belegte Herkunft, Geschäftspartner über amtliche Register geprüft und von unseren Rechtsberatern beurteilt.",
 idx_c3_n:"Bereich 03",
 idx_c3_t:"Energie",
 idx_c3_d:"Diesel EN590, Jet Fuel A1, Rohöl, Erdgas, LPG, LNG. Sanktionsabgleich und Prüfung der Unterlagen bei jedem Vorgang.",
@@ -4244,8 +4326,8 @@ agv8:"Internationaler Handel",
 ag_cta_t:"Bedarf an Gewürzen oder Agrarprodukten?",
 ag_cta_b:"Angebot anfordern",
 mt_eb:"Bereich 02 · Metalle",
-mt_h1:"Gold",
-mt_sub:"Unser Bereich Metalle widmet sich der Goldvermittlung. Akkreditierte Raffinerien, vollständige Herkunftsnachweise, Geschäftspartner über amtliche Register geprüft und von unseren Rechtsberatern beurteilt.",
+mt_h1:"Edelmetalle",
+mt_sub:"Unser Bereich Metalle umfasst Edelmetalle, allen voran Gold. Akkreditierte Raffinerien, vollständige Herkunftsnachweise, Geschäftspartner über amtliche Register geprüft und von unseren Rechtsberatern beurteilt.",
 mt_cta:"Kontakt aufnehmen",
 mt_role_eb:"Unsere Rolle",
 mt_role_t:"Geprüfter Vermittler",
@@ -4385,7 +4467,7 @@ sell_2:"Bankreferenzen und Zahlungsfähigkeit bestätigt",
 sell_3:"Entscheidungsträger vor dem ersten Vorgang persönlich getroffen",
 ct_sending:"Wird gesendet…",
 ct_ok:"Nachricht erhalten. Wir melden uns innerhalb von 48 Arbeitsstunden.",
-ct_err:"Senden fehlgeschlagen. Schreiben Sie uns direkt an <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"Senden fehlgeschlagen. Schreiben Sie uns direkt an <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"Aufnahme eines Partners",
 ob_t:"Sechs Schritte, in dieser Reihenfolge, für jeden Partner",
 ob_p:"Dasselbe Verfahren gilt für Käufer wie für Lieferanten, in allen drei Bereichen. Es dauert je nach Land zwei bis sechs Wochen.",
@@ -4497,8 +4579,8 @@ dc_eb:"Umgang mit Unterlagen",
 mt_q_eb:"Was man uns fragt",
 mt_q_t:"Die vier Fragen, die einen Vorgang entscheiden",
 mt_q1_k:"Forme",
-mt_q1_t:"Sous quelle forme la marchandise est-elle livrée",
-mt_q1_d:"Doré, lingot, grenaille : la forme détermine le coût d'affinage et la capacité de l'acheteur à réceptionner. Une opération se cale sur ce point avant le prix.",
+mt_q1_t:"In welcher Form wird die Ware geliefert",
+mt_q1_d:"Doré, Barren, Granalien: Die Form bestimmt die Affinationskosten und ob der Käufer überhaupt annehmen kann. Ein Vorgang wird an diesem Punkt festgemacht, noch vor dem Preis.",
 mt_q2_k:"Raffinerie",
 mt_q2_t:"Quelle raffinerie intervient à l'affinage",
 mt_q2_d:"L'accréditation de la raffinerie conditionne l'acceptation du lot par la contrepartie et par sa banque. Nous établissons ce point avant toute présentation.",
@@ -4524,7 +4606,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"Unser Prüfverfahren",
-cf_link_detail:"Unser Verfahren im Detail"
+cf_link_detail:"Unser Verfahren im Detail",
+ft_li:"Terra Commodities auf LinkedIn folgen",
+ft_city:"Paris, Frankreich"
 },
 pt:{
 nav_home:"Início",
@@ -4581,7 +4665,7 @@ idx_c1_t:"Agricultura",
 idx_c1_d:"Baunilha, pimentas, cravinho, canela, óleos essenciais. As nossas equipas estão no terreno em Madagáscar: conhecemos as explorações e vemos a mercadoria antes de si.",
 idx_c2_n:"Divisão 02",
 idx_c2_t:"Metais",
-idx_c2_d:"Ouro. Refinarias acreditadas, origem documentada, contrapartes verificadas junto dos registos oficiais e analisadas pelos nossos advogados.",
+idx_c2_d:"Metais preciosos. Refinarias acreditadas, origem documentada, contrapartes verificadas junto dos registos oficiais e analisadas pelos nossos advogados.",
 idx_c3_n:"Divisão 03",
 idx_c3_t:"Energia",
 idx_c3_d:"Gasóleo EN590, jet fuel A1, bruto, gás natural, GPL, GNL. Rastreio de sanções e verificação documental em cada operação.",
@@ -4661,8 +4745,8 @@ agv8:"Comércio internacional",
 ag_cta_t:"Precisa de especiarias ou produtos agrícolas?",
 ag_cta_b:"Pedir cotação",
 mt_eb:"Divisão 02 · Metais",
-mt_h1:"Ouro",
-mt_sub:"A nossa divisão de Metais dedica-se à intermediação em ouro. Refinarias acreditadas, documentação de origem completa, contrapartes verificadas junto dos registos oficiais e analisadas pelos nossos advogados.",
+mt_h1:"Metais preciosos",
+mt_sub:"A nossa divisão de Metais abrange os metais preciosos, o ouro em primeiro lugar. Refinarias acreditadas, documentação de origem completa, contrapartes verificadas junto dos registos oficiais e analisadas pelos nossos advogados.",
 mt_cta:"Entrar em contacto",
 mt_role_eb:"O nosso papel",
 mt_role_t:"Intermediário verificado",
@@ -4802,7 +4886,7 @@ sell_2:"Referências bancárias e capacidade de pagamento confirmadas",
 sell_3:"Reunião com os decisores antes da primeira operação",
 ct_sending:"A enviar…",
 ct_ok:"Mensagem recebida. Voltaremos a contactá-lo no prazo de 48 horas úteis.",
-ct_err:"O envio falhou. Escreva-nos diretamente para <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"O envio falhou. Escreva-nos diretamente para <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"Integração de um parceiro",
 ob_t:"Seis etapas, por esta ordem, para cada parceiro",
 ob_p:"O mesmo processo aplica-se a compradores e fornecedores, nas três divisões. Demora entre duas e seis semanas consoante o país.",
@@ -4914,8 +4998,8 @@ dc_eb:"Circulação dos documentos",
 mt_q_eb:"O que nos perguntam",
 mt_q_t:"As quatro perguntas que decidem uma operação",
 mt_q1_k:"Forme",
-mt_q1_t:"Sous quelle forme la marchandise est-elle livrée",
-mt_q1_d:"Doré, lingot, grenaille : la forme détermine le coût d'affinage et la capacité de l'acheteur à réceptionner. Une opération se cale sur ce point avant le prix.",
+mt_q1_t:"Sob que forma é entregue a mercadoria",
+mt_q1_d:"Doré, lingote, granalha: a forma determina o custo de refinação e a capacidade do comprador para rececionar. Uma operação define-se neste ponto antes do preço.",
 mt_q2_k:"Raffinerie",
 mt_q2_t:"Quelle raffinerie intervient à l'affinage",
 mt_q2_d:"L'accréditation de la raffinerie conditionne l'acceptation du lot par la contrepartie et par sa banque. Nous établissons ce point avant toute présentation.",
@@ -4941,7 +5025,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"O nosso procedimento de verificação",
-cf_link_detail:"O detalhe do nosso procedimento"
+cf_link_detail:"O detalhe do nosso procedimento",
+ft_li:"Seguir a Terra Commodities no LinkedIn",
+ft_city:"Paris, França"
 },
 ar:{
 nav_home:"الرئيسية",
@@ -4998,7 +5084,7 @@ idx_c1_t:"الزراعة",
 idx_c1_d:"الفانيليا، الفلفل، القرنفل، القرفة، الزيوت العطرية. فِرقنا موجودة ميدانياً في مدغشقر: نعرف المزارع ونرى البضاعة قبلك.",
 idx_c2_n:"القسم 02",
 idx_c2_t:"المعادن",
-idx_c2_d:"الذهب. مصافٍ معتمدة، منشأ موثَّق، وأطراف مقابلة مُتحقَّق منها لدى السجلات الرسمية ومراجَعة من مستشارينا القانونيين.",
+idx_c2_d:"المعادن الثمينة. مصافٍ معتمدة، منشأ موثَّق، وأطراف مقابلة مُتحقَّق منها لدى السجلات الرسمية ومراجَعة من مستشارينا القانونيين.",
 idx_c3_n:"القسم 03",
 idx_c3_t:"الطاقة",
 idx_c3_d:"ديزل EN590، وقود طائرات A1، نفط خام، غاز طبيعي، غاز البترول المسال، الغاز الطبيعي المسال. فحص العقوبات والتحقق من الوثائق في كل عملية.",
@@ -5078,8 +5164,8 @@ agv8:"التجارة الدولية",
 ag_cta_t:"هل تحتاج توابل أو منتجات زراعية؟",
 ag_cta_b:"طلب عرض سعر",
 mt_eb:"القسم 02 · المعادن",
-mt_h1:"الذهب",
-mt_sub:"قسم المعادن لدينا مخصص للوساطة في الذهب. مصافٍ معتمدة، وثائق منشأ كاملة، وأطراف مقابلة مُتحقَّق منها لدى السجلات الرسمية ومراجَعة من مستشارينا القانونيين.",
+mt_h1:"المعادن الثمينة",
+mt_sub:"يغطي قسم المعادن لدينا المعادن الثمينة، وفي مقدمتها الذهب. مصافٍ معتمدة، وثائق منشأ كاملة، وأطراف مقابلة مُتحقَّق منها لدى السجلات الرسمية ومراجَعة من مستشارينا القانونيين.",
 mt_cta:"تواصل معنا",
 mt_role_eb:"دورنا",
 mt_role_t:"وسيط مُتحقَّق منه",
@@ -5219,7 +5305,7 @@ sell_2:"المراجع المصرفية والقدرة على الدفع مؤك�
 sell_3:"لقاء متخذي القرار قبل أول عملية",
 ct_sending:"جارٍ الإرسال…",
 ct_ok:"تم استلام رسالتك. سنعود إليك خلال 48 ساعة عمل.",
-ct_err:"تعذّر الإرسال. يرجى مراسلتنا مباشرة على <a href=\"mailto:ichr@terracommodities.fr\">ichr@terracommodities.fr</a>.",
+ct_err:"تعذّر الإرسال. يرجى مراسلتنا مباشرة على <a href=\"mailto:contact@terracommodities.fr\">contact@terracommodities.fr</a>.",
 ob_eb:"انضمام شريك جديد",
 ob_t:"ست مراحل، بهذا الترتيب، لكل شريك",
 ob_p:"يُطبَّق المسار نفسه على المشترين والمورّدين، في أقسامنا الثلاثة. ويستغرق بين أسبوعين وستة أسابيع بحسب البلد.",
@@ -5331,8 +5417,8 @@ dc_eb:"تداول الوثائق",
 mt_q_eb:"ما يُسأل عنه",
 mt_q_t:"الأسئلة الأربعة التي تحدّد مصير العملية",
 mt_q1_k:"Forme",
-mt_q1_t:"Sous quelle forme la marchandise est-elle livrée",
-mt_q1_d:"Doré, lingot, grenaille : la forme détermine le coût d'affinage et la capacité de l'acheteur à réceptionner. Une opération se cale sur ce point avant le prix.",
+mt_q1_t:"بأي صورة تُسلَّم البضاعة",
+mt_q1_d:"سبائك دوريه، أو سبائك مصفّاة، أو حبيبات: الصورة تحدّد كلفة التكرير وقدرة المشتري على الاستلام أصلاً. وتُحسم هذه النقطة قبل السعر.",
 mt_q2_k:"Raffinerie",
 mt_q2_t:"Quelle raffinerie intervient à l'affinage",
 mt_q2_d:"L'accréditation de la raffinerie conditionne l'acceptation du lot par la contrepartie et par sa banque. Nous établissons ce point avant toute présentation.",
@@ -5358,7 +5444,9 @@ nrg_q4_k:"Conformité",
 nrg_q4_t:"L'origine et les parties passent-elles le criblage",
 nrg_q4_d:"Origine du produit, pays de chargement, navire affrété, bénéficiaires effectifs : chacun est contrôlé sur les listes de sanctions avant toute mise en relation.",
 nrg_link:"إجراءات التحقق لدينا",
-cf_link_detail:"تفاصيل إجراءاتنا"
+cf_link_detail:"تفاصيل إجراءاتنا",
+ft_li:"تابع تيرا كومودتيز على لينكدإن",
+ft_city:"باريس، فرنسا"
 }
 };
 
