@@ -1,0 +1,72 @@
+# Terra Commodities — terracommodities.fr
+
+# ── Moteurs de recherche et assistants IA : accès autorisé ───────────────
+# Google, Bing et les assistants conversationnels sont ce qui amène des
+# visiteurs. Les bloquer rendrait le site invisible. De plus en plus
+# d'acheteurs commencent leur recherche par un assistant plutôt que par
+# un moteur : nous les laissons donc lire le site et le citer.
+
+User-agent: *
+Allow: /
+
+Disallow: /contact.php
+Disallow: /contact-fallback.log
+Disallow: /_design/
+Disallow: /tc-secrets.php
+
+# Les URL de langue (?lang=) sont des traductions, pas des doublons :
+# elles sont déclarées dans le sitemap avec leurs annotations hreflang.
+
+# ── Aspirateurs de site : refusés ────────────────────────────────────────
+# Ces outils copient l'intégralité d'un site en quelques minutes. Nos textes
+# sont originaux et constituent notre principal facteur de différenciation.
+
+User-agent: HTTrack
+Disallow: /
+User-agent: WebCopier
+Disallow: /
+User-agent: WebZIP
+Disallow: /
+User-agent: Wget
+Disallow: /
+User-agent: WebStripper
+Disallow: /
+User-agent: SiteSnagger
+Disallow: /
+User-agent: Offline Explorer
+Disallow: /
+User-agent: Teleport
+Disallow: /
+User-agent: TeleportPro
+Disallow: /
+User-agent: WebReaper
+Disallow: /
+
+# ── Outils d'analyse concurrentielle et de prospection : refusés ─────────
+# Ils alimentent les bases de données revendues aux prospecteurs et
+# consomment de la bande passante sans apporter de visiteur.
+
+User-agent: AhrefsBot
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: MJ12bot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+User-agent: BLEXBot
+Disallow: /
+User-agent: DataForSeoBot
+Disallow: /
+User-agent: SerpstatBot
+Disallow: /
+User-agent: PetalBot
+Disallow: /
+User-agent: MegaIndex
+Disallow: /
+User-agent: ZoominfoBot
+Disallow: /
+User-agent: Barkrowler
+Disallow: /
+
+Sitemap: https://www.terracommodities.fr/sitemap.xml
