@@ -1,0 +1,16 @@
+# Terra Commodities — contact sécurité
+# Norme RFC 9116.
+#
+# Ce fichier indique aux chercheurs en sécurité où signaler une faille.
+# Sa présence est un signal positif pour les outils de réputation des
+# navigateurs et évite qu'une découverte soit divulguée publiquement
+# avant que vous ne puissiez la corriger.
+
+Contact: mailto:contact@terracommodities.fr
+Expires: 2027-08-14T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://www.terracommodities.fr/.well-known/security.txt
+
+# Nous accusons réception de chaque signalement et nous nous engageons
+# à ne pas engager de poursuites contre un chercheur qui agit de bonne foi,
+# sans dégrader le service ni accéder à des données de tiers.
