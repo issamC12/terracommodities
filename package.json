@@ -1,10 +1,5 @@
 {
   "name": "terracommodities",
   "private": true,
-  "type": "module",
-  "description": "Site institutionnel Terra Commodities — courtage en matieres premieres",
-  "dependencies": {
-    "nodemailer": "^6.9.0",
-    "formidable": "^3.5.0"
-  }
+  "type": "module"
 }
